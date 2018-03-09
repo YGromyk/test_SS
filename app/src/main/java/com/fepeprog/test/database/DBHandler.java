@@ -8,6 +8,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import static com.fepeprog.test.SignActivity.TAG;
+
 /**
  * Created by fepeprog on 3/8/18.
  */
@@ -78,14 +80,21 @@ public class DBHandler {
         return false;
     }
 
-    public static boolean userExistsPhone(String phone) {
+    public static boolean userExistsPhone(String phone, String email) {
         if (phone == null || phone.isEmpty())
             return false;
         ArrayList<User> users = new ArrayList<>();
         users = getUsersFromDB();
         for (User u : users) {
-            if (u.getNumber().equals(phone))
+            if (u.getNumber().equals(phone) && !u.getEmail().equals(email)){
+                Log.d(TAG, "userExistsPhone: ____________");
+                Log.d(TAG, "userExistsPhone: " + phone +" == " +u.getNumber());
+                Log.d(TAG, "userExistsPhone: " + phone +" == " +u.getEmail());
+                Log.d(TAG, "userExistsPhone: "+true);
+                Log.d(TAG, "userExistsPhone: ____________");
+
                 return true;
+            }
         }
         return false;
     }

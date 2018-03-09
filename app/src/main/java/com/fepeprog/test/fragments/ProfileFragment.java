@@ -255,11 +255,11 @@ public class ProfileFragment extends Fragment {
                 if (!isPhoneValide()) {
                     phoneTextInputLayout.setError("Phone is not valide!\nFormat \'+(countrycode)+(number)\'");
                 }
-                if (DBHandler.userExistsPhone(s.toString()) && !s.toString().equals(currentUser.getNumber())) {
+                if (DBHandler.userExistsPhone(s.toString(), emailEditText.getText().toString()) && !s.toString().equals(currentUser.getNumber())) {
                     phoneTextInputLayout.setError("User with this number exists!");
                 }
-                if ((isPhoneValide() && !DBHandler.userExistsPhone(s.toString()))
-                        || (DBHandler.userExistsPhone(s.toString()) && !s.toString().equals(currentUser.getNumber()))) {
+                if ((isPhoneValide() && !DBHandler.userExistsPhone(s.toString(), emailEditText.getText().toString()))
+                        || s.toString().equals(currentUser.getNumber())) {
                     phoneTextInputLayout.setError(null);
                     currentUser.setNumber(s.toString());
                 }
