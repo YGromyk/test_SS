@@ -1,9 +1,25 @@
 <resources>
-    <string name="app_name">test</string>
-    <string name="title_activity_home">HomeActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="profile">Profile</string>
-    <string name="tours">Tours</string>
+    <string name="app_name">Test App</string>
+    <string name="information">Information</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit">Exit from app?</string>
+    <string name="empty_fields">Fields are empty!</string>
+    <string name="invalid_password">Password is invalid! It must contain numbers, lower and uppercase letters!</string>
+    <string name="email_exists">User with this email exists!</string>
+    <string name="user_not_exists">User not exists!</string>
+    <string name="email_not_valide">Email isn\'t valide! Try again!</string>
+    <string name="user_created">User created!</string>
+    <string name="Invalid_name">"Name isn't valide!"</string>
+    <string name="logo_description">logo</string>
+    <string name="avatar">avatar</string>
+    <string name="save_changed">Save changed?</string>
+    <string name="changed_saved">"Changed saved!"</string>
+    <string name="unsigned_numbers">You can enter only unsigned numbers!</string>
+    <string name="so_young">You are so young, ser(((</string>
+    <string name="so_old">So old((((</string>
+    <string name="only_integers">You can input only integer numbers!</string>
+    <string name="invalid_phone">Phone is not valide!\nFormat \'+(country code)+(number)\'</string>
+    <string name="phone_exists">User with this number exists!</string>
+    <string name="invalid_name">Name isn\'t valide!</string>
 </resources>

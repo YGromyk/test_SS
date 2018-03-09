@@ -18,17 +18,11 @@ import com.fepeprog.test.R;
 import com.fepeprog.test.Validator;
 import com.fepeprog.test.database.DBHandler;
 
-/**
- * Created by fepeprog on 3/7/18.
- */
-
 public class SignInFragment extends Fragment {
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
     private EditText editTextEmail;
     private EditText editTextPassword;
-    private Button buttonSignIn;
-    private TextView textViewCreateProfile;
 
     @Nullable
     @Override
@@ -38,8 +32,8 @@ public class SignInFragment extends Fragment {
         textInputLayoutPassword = (TextInputLayout) view.findViewById(R.id.text_input_layout_password);
         editTextEmail = (EditText) view.findViewById(R.id.edit_text_email);
         editTextPassword = (EditText) view.findViewById(R.id.edit_text_password);
-        buttonSignIn = (Button) view.findViewById(R.id.sign_in);
-        textViewCreateProfile = (TextView) view.findViewById(R.id.sign_in_textView);
+        Button buttonSignIn = (Button) view.findViewById(R.id.sign_in);
+        TextView textViewCreateProfile = (TextView) view.findViewById(R.id.sign_in_textView);
 
         editTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -53,7 +47,7 @@ public class SignInFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!Validator.validateEmail(s.toString()) && !s.toString().isEmpty()) {
-                    textInputLayoutEmail.setError("Email isn't valide! Try again!");
+                    textInputLayoutEmail.setError(getString(R.string.email_not_valide));
                 } else
                     textInputLayoutEmail.setError(null);
             }
@@ -70,8 +64,7 @@ public class SignInFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!Validator.validatePassword(s.toString()) && !s.toString().isEmpty()) {
-                    textInputLayoutPassword.setError("Password is not valide! It must contain uppercase & small case" +
-                            "letters and number");
+                    textInputLayoutPassword.setError(getString(R.string.invalid_password));
                 } else
                     textInputLayoutPassword.setError(null);
             }
@@ -104,10 +97,10 @@ public class SignInFragment extends Fragment {
                             .commit();
                 }
                 if (email.isEmpty() && password.isEmpty()) {
-                    Toast.makeText(getActivity(), "Fields is empty!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.empty_fields, Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(getActivity(), "User not exists!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.user_not_exists, Toast.LENGTH_SHORT).show();
                 }
             }
         });

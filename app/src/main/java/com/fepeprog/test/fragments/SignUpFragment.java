@@ -19,10 +19,6 @@ import com.fepeprog.test.Validator;
 import com.fepeprog.test.database.DBHandler;
 import com.fepeprog.test.database.User;
 
-/**
- * Created by fepeprog on 3/8/18.
- */
-
 public class SignUpFragment extends Fragment {
     private TextInputLayout textInputLayoutEmail;
     private TextInputLayout textInputLayoutPassword;
@@ -31,7 +27,6 @@ public class SignUpFragment extends Fragment {
     private EditText editTextPassword;
     private EditText editTextName;
     private Button buttonSignUp;
-    private TextView textViewSignIn;
 
     @Nullable
     @Override
@@ -46,7 +41,7 @@ public class SignUpFragment extends Fragment {
         editTextName = (EditText) view.findViewById(R.id.edit_text_name);
 
         buttonSignUp = (Button) view.findViewById(R.id.sign_up);
-        textViewSignIn = (TextView) view.findViewById(R.id.sign_in_textView);
+         TextView textViewSignIn = (TextView) view.findViewById(R.id.sign_in_textView);
 
         editTextEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -60,7 +55,7 @@ public class SignUpFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!Validator.validateEmail(s.toString()) && !s.toString().isEmpty()) {
-                    textInputLayoutEmail.setError("Email isn't valide! Try again!");
+                    textInputLayoutEmail.setError(getString(R.string.email_not_valide));
                     buttonSignUp.setEnabled(false);
                 } else {
                     textInputLayoutEmail.setError(null);
@@ -80,8 +75,7 @@ public class SignUpFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!Validator.validatePassword(s.toString()) && !s.toString().isEmpty()) {
-                    textInputLayoutPassword.setError("Password is not valide! It must contain uppercase & small case" +
-                            "letters and number");
+                    textInputLayoutPassword.setError(getString(R.string.invalid_password));
                     buttonSignUp.setEnabled(false);
 
                 } else {
@@ -102,8 +96,8 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!(Validator.validateNameLat(s.toString()) || Validator.validateNameCyr(s.toString())) && !s.toString().isEmpty()) {
-                    textInputLayoutName.setError("Name isn't valide!");
+                if (!(Validator.validateNameLatin(s.toString()) || Validator.validateNameCyrillic(s.toString())) && !s.toString().isEmpty()) {
+                    textInputLayoutName.setError(getString(R.string.invalid_name));
                     buttonSignUp.setEnabled(false);
                 } else {
                     textInputLayoutName.setError(null);
@@ -132,12 +126,12 @@ public class SignUpFragment extends Fragment {
                     User user = new User(email, name, password);
                     if (!DBHandler.userExistsEmail(email)) {
                         DBHandler.createUser(user);
-                        Toast.makeText(getActivity(), "User created!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.user_created, Toast.LENGTH_SHORT).show();
                     }else{
-                        Toast.makeText(getActivity(), "User with this email exists!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.email_exists, Toast.LENGTH_SHORT).show();
                     }
                 }else {
-                    Toast.makeText(getActivity(), "Fields is empty!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.empty_fields, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -152,8 +146,8 @@ public class SignUpFragment extends Fragment {
 
         boolean checkPassword = !password.isEmpty() && Validator.validatePassword(password);
         boolean checkEmail = !email.isEmpty() && Validator.validateEmail(email);
-        boolean checkName = !name.isEmpty() && (!Validator.validateNameLat(name)
-                                                || !Validator.validateNameCyr(name));
+        boolean checkName = !name.isEmpty() && (!Validator.validateNameLatin(name)
+                                                || !Validator.validateNameCyrillic(name));
 
         return checkPassword && checkEmail && checkName;
     }

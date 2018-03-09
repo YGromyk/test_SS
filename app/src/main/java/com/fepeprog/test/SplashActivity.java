@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 public class SplashActivity extends AppCompatActivity {
     private ProgressBar progressBar;

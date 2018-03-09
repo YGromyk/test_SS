@@ -4,13 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by fepeprog on 3/8/18.
- */
-
 public class DBOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "users.db";
-    public static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 1;
 
     public DBOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -18,12 +14,12 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists "+DBSchema.TABLE_NAME+"("+
-        DBSchema.Columns.EMAIL+" primary key, "+
-        DBSchema.Columns.NAME+", "+
-        DBSchema.Columns.AGE+", "+
-        DBSchema.Columns.PHONE_NUMBER+", "+
-        DBSchema.Columns.PASSWORD+")");
+        db.execSQL("create table if not exists " + DBSchema.TABLE_NAME + "(" +
+                DBSchema.Columns.EMAIL + " primary key, " +
+                DBSchema.Columns.NAME + ", " +
+                DBSchema.Columns.AGE + ", " +
+                DBSchema.Columns.PHONE_NUMBER + ", " +
+                DBSchema.Columns.PASSWORD + ")");
 
     }
 

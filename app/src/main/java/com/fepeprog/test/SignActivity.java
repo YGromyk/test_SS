@@ -29,9 +29,8 @@ public class SignActivity extends AppCompatActivity {
 
         if (count == 0) {
             new AlertDialog.Builder(this)
-                    .setTitle("Information!")
-                    .setMessage("Exit from app?")
-                    .setIcon(android.R.drawable.stat_notify_error)
+                    .setTitle(R.string.information)
+                    .setMessage(R.string.exit)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -39,7 +38,7 @@ public class SignActivity extends AppCompatActivity {
                             System.exit(0);
                         }
                     })
-                    .setNegativeButton("Cancel", null)
+                    .setNegativeButton(R.string.cancel, null)
                     .show();
         } else {
             getSupportFragmentManager().popBackStack();

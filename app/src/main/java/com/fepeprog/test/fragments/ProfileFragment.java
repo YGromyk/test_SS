@@ -24,9 +24,6 @@ import com.fepeprog.test.Validator;
 import com.fepeprog.test.database.DBHandler;
 import com.fepeprog.test.database.User;
 
-/**
- * Created by fepeprog on 3/8/18.
- */
 
 public class ProfileFragment extends Fragment {
     private TextView emailEditText;
@@ -34,8 +31,6 @@ public class ProfileFragment extends Fragment {
     private EditText ageEditText;
     private EditText phoneEditText;
     private EditText nameEditText;
-    private TextView editName;
-    private Button saveState;
     private TextInputLayout phoneTextInputLayout;
 
     private User currentUser;
@@ -52,8 +47,9 @@ public class ProfileFragment extends Fragment {
         ageEditText = (EditText) view.findViewById(R.id.age);
         phoneEditText = (EditText) view.findViewById(R.id.phone_number);
         nameEditText = (EditText) view.findViewById(R.id.name_profile);
-        editName = (TextView) view.findViewById(R.id.edit_name);
-        saveState = (Button) view.findViewById(R.id.save);
+
+        Button saveState = (Button) view.findViewById(R.id.save);
+        TextView editName = (TextView) view.findViewById(R.id.edit_name);
 
         phoneTextInputLayout = (TextInputLayout) view.findViewById(R.id.phone_text_input_layout);
 
@@ -84,9 +80,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Information!")
-                        .setMessage("Save changed?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.information)
+                        .setMessage(R.string.save_changed)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 boolean flagChanged = false;
@@ -100,7 +96,7 @@ public class ProfileFragment extends Fragment {
                                     flagChanged = true;
                                 }
                                 String name = nameEditText.getText().toString();
-                                if (Validator.validateNameCyr(name) || Validator.validateNameLat(name)) {
+                                if (Validator.validateNameCyrillic(name) || Validator.validateNameLatin(name)) {
                                     currentUser.setName(name);
                                     flagChanged = true;
                                 }
@@ -121,11 +117,11 @@ public class ProfileFragment extends Fragment {
                                 if (flagChanged) {
                                     DBHandler.updateUser(currentUser);
                                     enableFields(false);
-                                    Toast.makeText(getActivity(), "Changed saved!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), R.string.changed_saved, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         })
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(R.string.cancel, null)
                         .show();
             }
         });
@@ -158,7 +154,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!Validator.validatePassword(s.toString()) && !s.toString().isEmpty()) {
-                    passwordEditText.setError("password is not valide!");
+                    passwordEditText.setError(getString(R.string.invalid_password));
                 } else {
                     currentUser.setPassword(s.toString());
                     passwordEditText.setError(null);
@@ -182,8 +178,8 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!(Validator.validateNameLat(s.toString()) || Validator.validateNameCyr(s.toString())) && !s.toString().isEmpty()) {
-                    nameEditText.setError("name is not valide!");
+                if (!(Validator.validateNameLatin(s.toString()) || Validator.validateNameCyrillic(s.toString())) && !s.toString().isEmpty()) {
+                    nameEditText.setError(getString(R.string.invalid_name));
                 } else {
                     nameEditText.setError(null);
                     currentUser.setName(s.toString());
@@ -210,17 +206,17 @@ public class ProfileFragment extends Fragment {
                 try {
                     int age = Integer.valueOf(s.toString());
                     if (age < 0)
-                        ageEditText.setError("You can enter only unsigned numbers!");
+                        ageEditText.setError(getString(R.string.unsigned_numbers));
                     if (age < 14 && age > 0)
-                        ageEditText.setError("You are so little)))");
+                        ageEditText.setError(getString(R.string.so_young));
                     if (age > 100)
-                        ageEditText.setError("So old(");
+                        ageEditText.setError(getString(R.string.so_old));
                     else {
                         currentUser.setAge(age);
                     }
 
                 } catch (NumberFormatException e) {
-                    ageEditText.setError("You can input only integer numbers!");
+                    ageEditText.setError(getString(R.string.only_integers));
                 }
             }
         });
@@ -253,10 +249,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!isPhoneValide()) {
-                    phoneTextInputLayout.setError("Phone is not valide!\nFormat \'+(countrycode)+(number)\'");
+                    phoneTextInputLayout.setError(getString(R.string.invalid_phone));
                 }
                 if (DBHandler.userExistsPhone(s.toString(), emailEditText.getText().toString()) && !s.toString().equals(currentUser.getNumber())) {
-                    phoneTextInputLayout.setError("User with this number exists!");
+                    phoneTextInputLayout.setError(getString(R.string.phone_exists));
                 }
                 if ((isPhoneValide() && !DBHandler.userExistsPhone(s.toString(), emailEditText.getText().toString()))
                         || s.toString().equals(currentUser.getNumber())) {
@@ -284,10 +280,7 @@ public class ProfileFragment extends Fragment {
             }
             if (Validator.validatePhone(number))
                 return true;
-            else
-                return false;
         }
         return false;
-
     }
 }

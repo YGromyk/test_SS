@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <ImageView
-        android:id="@+id/logo_splash"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="92dp"
-        android:src="@drawable/logo" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/logo_splash"
-        android:text="Veveltra"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#2196F3"
-        android:id="@+id/brand_name"/>
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="75dp"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_below="@id/brand_name"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/progress_splash"
-        android:progressTint="#2196F3"
-        android:max="100"
-        android:progress="12"/>
+
+        <ImageView
+            android:id="@+id/logo_splash"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="92dp"
+            android:contentDescription="@string/logo_description"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/brand_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo_splash"
+            android:layout_centerHorizontal="true"
+            android:text="Veveltra"
+            android:textColor="#2196F3"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progress_splash"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/brand_name"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="75dp"
+            android:layout_marginTop="20dp"
+            android:max="100"
+            android:progress="12"
+            android:progressTint="#2196F3" />
     </RelativeLayout>
 </ScrollView>

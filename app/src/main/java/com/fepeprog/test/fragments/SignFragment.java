@@ -10,20 +10,14 @@ import android.widget.Button;
 
 import com.fepeprog.test.R;
 
-/**
- * Created by fepeprog on 3/7/18.
- */
-
 public class SignFragment extends Fragment {
-    private Button signInOpen;
-    private Button signUpOpen;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sign_fragment, container, false);
-        signInOpen = (Button) view.findViewById(R.id.sign_in);
-        signUpOpen = (Button) view.findViewById(R.id.sign_up);
+        Button signInOpen = (Button) view.findViewById(R.id.sign_in);
+        Button signUpOpen = (Button) view.findViewById(R.id.sign_up);
 
         signInOpen.setOnClickListener(new View.OnClickListener() {
             @Override

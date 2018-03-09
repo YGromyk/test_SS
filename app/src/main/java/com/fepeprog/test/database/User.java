@@ -1,9 +1,5 @@
 package com.fepeprog.test.database;
 
-/**
- * Created by fepeprog on 3/8/18.
- */
-
 public class User {
     private String email;
     private String name;

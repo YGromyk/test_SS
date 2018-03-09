@@ -2,10 +2,6 @@ package com.fepeprog.test.database;
 
 import android.database.Cursor;
 
-/**
- * Created by fepeprog on 3/8/18.
- */
-
 public class UserCursorWrapper extends android.database.CursorWrapper {
     public UserCursorWrapper(Cursor cursor) {
         super(cursor);
@@ -18,7 +14,6 @@ public class UserCursorWrapper extends android.database.CursorWrapper {
         String password = getString(getColumnIndex(DBSchema.Columns.PASSWORD));
         int age = getInt(getColumnIndex(DBSchema.Columns.AGE));
 
-        User user = new User(email, name, number, password, age);
-        return user;
+        return new User(email, name, number, password, age);
     }
 }

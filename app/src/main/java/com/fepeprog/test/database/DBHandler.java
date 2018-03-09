@@ -4,18 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 
-import static com.fepeprog.test.SignActivity.TAG;
-
-/**
- * Created by fepeprog on 3/8/18.
- */
 
 public class DBHandler {
-    public static SQLiteDatabase sqLiteDatabase;
+    private static SQLiteDatabase sqLiteDatabase;
     private static Context mContext;
 
     public static void initDB(Context context) {
@@ -55,8 +49,6 @@ public class DBHandler {
             cursorWrapper.moveToFirst();
             while (!cursorWrapper.isAfterLast()) {
                 users.add(cursorWrapper.getUser());
-                Log.d("databaseusers", cursorWrapper.getUser().getEmail()+", "+
-                cursorWrapper.getUser().getPassword());
                 cursorWrapper.moveToNext();
             }
         } finally {
@@ -71,8 +63,7 @@ public class DBHandler {
     }
 
     public static boolean userExistsEmail(String email) {
-        ArrayList<User> users = new ArrayList<>();
-        users = getUsersFromDB();
+        ArrayList<User> users = getUsersFromDB();
         for (User u : users) {
             if (u.getEmail().equals(email))
                 return true;
@@ -83,18 +74,10 @@ public class DBHandler {
     public static boolean userExistsPhone(String phone, String email) {
         if (phone == null || phone.isEmpty())
             return false;
-        ArrayList<User> users = new ArrayList<>();
-        users = getUsersFromDB();
+        ArrayList<User> users = getUsersFromDB();
         for (User u : users) {
-            if (u.getNumber().equals(phone) && !u.getEmail().equals(email)){
-                Log.d(TAG, "userExistsPhone: ____________");
-                Log.d(TAG, "userExistsPhone: " + phone +" == " +u.getNumber());
-                Log.d(TAG, "userExistsPhone: " + phone +" == " +u.getEmail());
-                Log.d(TAG, "userExistsPhone: "+true);
-                Log.d(TAG, "userExistsPhone: ____________");
-
+            if (u.getNumber().equals(phone) && !u.getEmail().equals(email))
                 return true;
-            }
         }
         return false;
     }
