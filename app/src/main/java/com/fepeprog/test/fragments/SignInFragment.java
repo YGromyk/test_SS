@@ -93,7 +93,6 @@ public class SignInFragment extends Fragment {
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
                 if (DBHandler.signingIn(email, password)) {
-                    Toast.makeText(getActivity(), "Helloooo", Toast.LENGTH_SHORT).show();
                     ProfileFragment profileFragment = new ProfileFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("email", email);
