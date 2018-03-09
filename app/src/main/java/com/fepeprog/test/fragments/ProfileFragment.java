@@ -9,14 +9,17 @@ import android.support.v7.app.AlertDialog;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fepeprog.test.R;
+import com.fepeprog.test.SignActivity;
 import com.fepeprog.test.Validator;
 import com.fepeprog.test.database.DBHandler;
 import com.fepeprog.test.database.User;
@@ -26,7 +29,7 @@ import com.fepeprog.test.database.User;
  */
 
 public class ProfileFragment extends Fragment {
-    private EditText emailEditText;
+    private TextView emailEditText;
     private EditText passwordEditText;
     private EditText ageEditText;
     private EditText phoneEditText;
@@ -44,7 +47,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.profile_layout, container, false);
         final String email = getArguments().getString("email");
         currentUser = DBHandler.getUser(email);
-        emailEditText = (EditText) view.findViewById(R.id.email_profile);
+        emailEditText = (TextView) view.findViewById(R.id.email_profile);
         passwordEditText = (EditText) view.findViewById(R.id.password_profile);
         ageEditText = (EditText) view.findViewById(R.id.age);
         phoneEditText = (EditText) view.findViewById(R.id.phone_number);
@@ -57,11 +60,8 @@ public class ProfileFragment extends Fragment {
         editName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nameEditText.setEnabled(true);
-                emailEditText.setEnabled(true);
-                passwordEditText.setEnabled(true);
-                ageEditText.setEnabled(true);
-                phoneEditText.setEnabled(true);
+                enableFields(true);
+                Toast.makeText(getActivity(), "You can edit information", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -71,7 +71,6 @@ public class ProfileFragment extends Fragment {
         passwordEditText.setText(currentUser.getPassword());
         ageEditText.setText("age: " + currentUser.getAge() + " years");
         phoneEditText.setText("phone: " + currentUser.getNumber());
-        nameEditText.setEnabled(true);
 
 
         //check edit texts
@@ -90,7 +89,40 @@ public class ProfileFragment extends Fragment {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                DBHandler.updateUser(currentUser);
+                                boolean flagChanged = false;
+                                if (isPhoneValide()) {
+                                    String number = phoneEditText.getText().toString();
+                                    String[] parts = number.split(":");
+                                    if (parts.length > 1)
+                                        currentUser.setNumber(parts[1]);
+                                    else
+                                        currentUser.setNumber(number);
+                                    flagChanged = true;
+                                }
+                                String name = nameEditText.getText().toString();
+                                if (Validator.validateNameCyr(name) || Validator.validateNameLat(name)) {
+                                    currentUser.setName(name);
+                                    flagChanged = true;
+                                }
+                                if (Validator.validatePassword(passwordEditText.getText().toString())) {
+                                    currentUser.setPassword(passwordEditText.getText().toString());
+                                    flagChanged = true;
+                                }
+                                int age = 0;
+                                try {
+                                    age = Integer.valueOf(ageEditText.getText().toString());
+                                } catch (NumberFormatException e) {
+                                    Log.w(SignActivity.TAG, "error cast!");
+                                }
+                                if (age > 12 && age < 100) {
+                                    currentUser.setAge(age);
+                                    flagChanged = true;
+                                }
+                                if (flagChanged) {
+                                    DBHandler.updateUser(currentUser);
+                                    enableFields(false);
+                                    Toast.makeText(getActivity(), "Changed saved!", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -101,45 +133,7 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    /* public void setEmailEditTextValidate() {
-         emailEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-             @Override
-             public void onFocusChange(View v, boolean hasFocus) {
-                 String email = emailEditText.getText().toString();
-                 if (hasFocus) {
-                     emailEditText.setText(email);
-                 } else {
-                     emailEditText.setText("email: " + email);
-                 }
-             }
-         });
-         emailEditText.addTextChangedListener(new TextWatcher() {
-             @Override
-             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-             }
-
-             @Override
-             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-             }
-
-             @Override
-             public void afterTextChanged(Editable s) {
-                 if (!Validator.validateEmail(s.toString()) && !s.toString().isEmpty()) {
-                     emailEditText.setError("Email is not valide!");
-                 }
-                 if (DBHandler.userExistsEmail(s.toString()) && !s.toString().equals(currentUser.getEmail())) {
-                     emailEditText.setError("Already exists user with this email");
-                 } else {
-                     emailEditText.setError(null);
-                     currentUser.setEmail(s.toString());
-                     Toast.makeText(getActivity(), "Email changed!", Toast.LENGTH_SHORT).show();
-                 }
-             }
-         });
-     }
- */
     public void setPasswordEditTextValidate() {
         passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -147,8 +141,6 @@ public class ProfileFragment extends Fragment {
                 String password = passwordEditText.getText().toString();
                 if (hasFocus) {
                     passwordEditText.setText(password);
-                } else {
-                    passwordEditText.setText("password: " + password);
                 }
             }
         });
@@ -239,6 +231,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
+                    if (currentUser.getNumber().equals("null")) {
+                        phoneEditText.setText("");
+                        return;
+                    }
                     phoneEditText.setText((currentUser.getNumber() == null) ? "" : currentUser.getNumber());
                 }
             }
@@ -256,22 +252,42 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
-
-                    if (!Validator.validatePhone(s.toString())) {
-                        phoneTextInputLayout.setError("Phone is not valide!\nFormat \'+(countrycode)+(number)\'");
-                    }
-                    if (DBHandler.userExistsPhone(s.toString()) && !s.toString().equals(currentUser.getNumber())) {
-                        phoneTextInputLayout.setError("User with this number exists!");
-                    }
-                    if ((Validator.validatePhone(s.toString()) && !DBHandler.userExistsPhone(s.toString()))
-                            || (DBHandler.userExistsPhone(s.toString()) && !s.toString().equals(currentUser.getNumber()))) {
-                        phoneTextInputLayout.setError(null);
-                        currentUser.setNumber(s.toString());
-                    }
+                if (!isPhoneValide()) {
+                    phoneTextInputLayout.setError("Phone is not valide!\nFormat \'+(countrycode)+(number)\'");
+                }
+                if (DBHandler.userExistsPhone(s.toString()) && !s.toString().equals(currentUser.getNumber())) {
+                    phoneTextInputLayout.setError("User with this number exists!");
+                }
+                if ((isPhoneValide() && !DBHandler.userExistsPhone(s.toString()))
+                        || (DBHandler.userExistsPhone(s.toString()) && !s.toString().equals(currentUser.getNumber()))) {
+                    phoneTextInputLayout.setError(null);
+                    currentUser.setNumber(s.toString());
                 }
             }
         });
     }
 
+    public void enableFields(boolean enabled) {
+        nameEditText.setEnabled(enabled);
+        emailEditText.setEnabled(enabled);
+        passwordEditText.setEnabled(enabled);
+        ageEditText.setEnabled(enabled);
+        phoneEditText.setEnabled(enabled);
+    }
+
+    public boolean isPhoneValide() {
+        String number = phoneEditText.getText().toString();
+        if (!number.isEmpty()) {
+            String[] parts = number.split(":");
+            if (parts[0].equals("phone") && Validator.validatePhone(parts[1])) {
+                return true;
+            }
+            if (Validator.validatePhone(number))
+                return true;
+            else
+                return false;
+        }
+        return false;
+
+    }
 }

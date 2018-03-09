@@ -9,6 +9,7 @@ import com.fepeprog.test.database.DBHandler;
 import com.fepeprog.test.fragments.SignFragment;
 
 public class SignActivity extends AppCompatActivity {
+    public static final String TAG = "test_SS";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

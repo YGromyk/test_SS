@@ -21,7 +21,7 @@ public class Validator {
     }
     public static boolean validatePassword(String password){
         final String PASSWORD_PATTERN =
-                "((?=.*[a-z])(?=.*[A-Z]).{6,20})";
+                "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,20})";
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();

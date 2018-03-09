@@ -136,6 +136,8 @@ public class SignUpFragment extends Fragment {
                     }else{
                         Toast.makeText(getActivity(), "User with this email exists!", Toast.LENGTH_SHORT).show();
                     }
+                }else {
+                    Toast.makeText(getActivity(), "Fields is empty!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

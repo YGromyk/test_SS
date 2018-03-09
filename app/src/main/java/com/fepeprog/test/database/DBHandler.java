@@ -53,7 +53,8 @@ public class DBHandler {
             cursorWrapper.moveToFirst();
             while (!cursorWrapper.isAfterLast()) {
                 users.add(cursorWrapper.getUser());
-                Log.d("databaseusers", cursorWrapper.getUser().getEmail());
+                Log.d("databaseusers", cursorWrapper.getUser().getEmail()+", "+
+                cursorWrapper.getUser().getPassword());
                 cursorWrapper.moveToNext();
             }
         } finally {

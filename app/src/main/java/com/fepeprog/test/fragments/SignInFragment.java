@@ -104,6 +104,12 @@ public class SignInFragment extends Fragment {
                             .addToBackStack(null)
                             .commit();
                 }
+                if (email.isEmpty() && password.isEmpty()) {
+                    Toast.makeText(getActivity(), "Fields is empty!", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getActivity(), "User not exists!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
