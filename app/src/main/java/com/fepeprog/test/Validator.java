@@ -14,8 +14,10 @@ public class Validator {
     }
 
     public static boolean validatePassword(String password) {
-        // password must contain 2 numbers, 2
-        return password.matches("([a-zA-Z]{8,})([0-9]{2,})");
+        final String PASSWORD_PATTERN = "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,20})";
+        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
     }
 
     public static boolean validateNameLatin(String name) {
@@ -25,10 +27,6 @@ public class Validator {
         return m.matches();
     }
 
-
-    /*
-    * param
-    * */
     public static boolean validateNameCyrillic(String name) {
         final String ePattern = "\\s*[А-ЯІЇЮЄЯЬ][-А-яіїюєяь\\s]+$";
         Pattern p = java.util.regex.Pattern.compile(ePattern);
