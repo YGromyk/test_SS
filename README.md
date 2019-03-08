@@ -1,4 +1,3 @@
-# test_SS
 ### Program that allows sign up and sign in with validation
 Were used:
 - DB interaction;
